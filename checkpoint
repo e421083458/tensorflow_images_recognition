@@ -1,0 +1,2 @@
+model_checkpoint_path: "/Users/niuyufu/PythonProjects/tensorflow/tflearn/examples/images/model_dog.tfl"
+all_model_checkpoint_paths: "/Users/niuyufu/PythonProjects/tensorflow/tflearn/examples/images/model_dog.tfl"
