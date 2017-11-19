@@ -98,6 +98,10 @@ class SpiderDogLabel:
         request = urllib2.Request(url, None, headers)
         u = urllib2.urlopen(request)
         data = u.read()
+
+        if len(data)==0:
+            return False
+
         f = open(fileName, 'wb')
         f.write(data)
         print u"正在悄悄保存她的一张图片为", fileName
@@ -118,6 +122,7 @@ class SpiderDogLabel:
         # print im.size[0]
         im.resize((width,height)).convert("RGB").save(fileName)
         im.close()
+
 
     # 创建新目录
     def mkdir(self, path):

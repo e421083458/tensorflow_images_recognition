@@ -746,9 +746,12 @@ def directory_to_samples(directory, flags=None, filter_channel=False):
                 targets.append(label)
 	label_list.append(c_dir)
         label += 1
+    print("========请记录对应标签信息 start ========")
     print("label_list=range(%d)" % (len(label_list)))
     for i in range(len(label_list)):
-        print("label_list[%d]=\"%s\""%(i,label_list[i]))
+        dir_list = label_list[i].split('/')
+        print("label_list[%d]=\"%s\""%(i,dir_list[-1]))
+    print("========请记录对应标签信息 end ========")
     return samples, targets
 
 

@@ -193,6 +193,23 @@ class googlenet_dog_model:
             googlenet_dog_model.__instance = object.__new__(cls, *args, **kwd)
         return googlenet_dog_model.__instance
 
+    # 此处需数据集labels
+    def get_labels(self):
+        label_list = range(12)
+        label_list[0] = "博美犬"
+        label_list[1] = "吉娃娃"
+        label_list[2] = "哈士奇"
+        label_list[3] = "德国牧羊犬"
+        label_list[4] = "杜宾犬"
+        label_list[5] = "松狮"
+        label_list[6] = "柴犬"
+        label_list[7] = "秋田犬"
+        label_list[8] = "藏獒"
+        label_list[9] = "蝴蝶犬"
+        label_list[10] = "贵宾犬"
+        label_list[11] = "边境牧羊犬"
+        return label_list
+
     def run_inference_on_image(self,file_path):
 
         # img = scipy.ndimage.imread(file_path, mode="RGB")
@@ -209,30 +226,23 @@ class googlenet_dog_model:
         print(predict_label)
         print(max(prediction[0]))
         print(prediction[0].tolist().index(max(prediction[0])))
-        label_list = range(12)
-        label_list[0] = "博美犬"
-        label_list[1] = "吉娃娃"
-        label_list[2] = "哈士奇"
-        label_list[3] = "德国牧羊犬"
-        label_list[4] = "杜宾犬"
-        label_list[5] = "松狮"
-        label_list[6] = "柴犬"
-        label_list[7] = "秋田犬"
-        label_list[8] = "藏獒"
-        label_list[9] = "蝴蝶犬"
-        label_list[10] = "贵宾犬"
-        label_list[11] = "边境牧羊犬"
+        label_list = self.get_labels()
 
         result = ""
         result_flag = False
+        result_index = None
+        max_index = prediction[0].tolist().index(max(prediction[0]))
         for i in range(len(prediction[0])):
-            if prediction[0][i] > 0.8:
+            if prediction[0][i] > 0.8 and i==max_index:
                 result_flag = True
-            if prediction[0][i] > 0.1:
-                result = label_list[i] + " 精准度：" + str(prediction[0][i]) + "<br/>"
+            else:
+                if prediction[0][i] > 0.05:
+                    if result=="":
+                        result = "也可能是：<br/>"
+                    result += "<li>" + label_list[i] + " 可能性：" + str(prediction[0][i]) + "</li>" + "<br/>"
 
         if result_flag:
-            result = "这是 %s" % (label_list[prediction[0].tolist().index(max(prediction[0]))]) + "<br/>" + result
+            result = "这是 <b>%s</b>" % (label_list[prediction[0].tolist().index(max(prediction[0]))]) + "<br/>" + result
         else:
             result = "sorry, 没有确切答案" + "<br/>" + result
         print(result_flag)

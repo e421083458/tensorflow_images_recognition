@@ -170,7 +170,7 @@ def main(_):
     # file_io.write_string_to_file("image_47.jpg", img_obj)
     # img = scipy.ndimage.imread("image_6.jpg", mode="RGB")
     # img = scipy.misc.imresize(img, (227, 227), interp="bicubic").astype(np.float32, casting='unsafe')
-    im = load_image("image_6.jpg")
+    im = load_image("upload/1e29bc0a-cc17-11e7-b433-6c4008af62d8.jpg")
     im = resize_image(im, 227, 227)
     im = pil_to_nparray(im)
     im /= 255.

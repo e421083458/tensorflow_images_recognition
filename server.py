@@ -17,7 +17,7 @@ import uuid
 
 ALLOWED_EXTENSIONS = set(['jpg', 'JPG', 'jpeg', 'JPEG'])
 app = Flask(__name__)
-model = googlenet_model()
+model = googlenet_dog_model()
 
 def load_batch(fpath):
     object = file_io.read_file_to_string(fpath)
@@ -59,16 +59,13 @@ def inference(file_name):
 
 @app.route("/", methods=['GET', 'POST'])
 def root():
-    result = """
-    <!doctype html>
-    <title>临时测试用</title>
-    <h1>一起体验图片预测</h1>
-    <form action="" method=post enctype=multipart/form-data>
-      <p><input type=file name=file value='选择图片'>
-         <input type=submit value='上传'>
-    </form>
-    <p>%s</p>
-    """ % "<br>"
+    label_list = model.get_labels()
+    label_count = len(model.get_labels())
+    label_html = ""
+    for i in range(label_count):
+        label_html+="<li>"+label_list[i]+"</li>"
+
+    out_html = ""
     if request.method == 'POST':
         file = request.files['file']
         old_file_name = file.filename
@@ -77,9 +74,22 @@ def root():
             file_path = os.path.join(FLAGS.upload_folder, filename)
             file.save(file_path)
             print('file saved to %s' % file_path)
-            out_html = ""
             out_html = inference(file_path)
-            return result + out_html
+
+    result = """
+    <!doctype html>
+    <title>临时测试用</title>
+    <h1>自定义训练集图片识别</h1>
+    <hr>
+    <form action="" method=post enctype=multipart/form-data>
+      <p><input type=file name=file value='选择图片'>
+         <input type=submit value='上传'>
+    </form>
+    <p>%s</p>
+    <h2>目前支持预测的分类有%d种：</h2>
+    <ul>%s
+    </ul>
+    """ % (out_html,label_count,label_html)
     return result
 
 

@@ -152,10 +152,11 @@ loss = fully_connected(pool5_7_7, 12,activation='softmax')  #设置多少个类�
 network = regression(loss, optimizer='momentum',
                      loss='categorical_crossentropy',
                      learning_rate=0.001)
+
 model = tflearn.DNN(network, checkpoint_path='model_dog',
                     max_checkpoints=1, tensorboard_verbose=2)
-model.fit(X, Y, n_epoch=1, validation_set=0.1, shuffle=True,
-          show_metric=True, batch_size=64, snapshot_step=200,
+model.fit(X, Y, n_epoch=100, validation_set=0.1, shuffle=True,
+          show_metric=True, batch_size=200, snapshot_step=200,
           snapshot_epoch=False, run_id='googlenet_dog')
 model_path = "model_dog.tfl"
 model.save(model_path)
